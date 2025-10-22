@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  freesurfer_cuda:
+    container_name: freesurfer_cuda_1
+    build:
+      context: .
+      args:
+         - FREESURFER_BIN=/freesurfer/bin
+    environment:
+      - FREESURFER_HOME=/freesurfer
+      - FSFAST_HOME=/freesurfer/fsfast
+    volumes:
+      - $FREESURFER_HOME:/freesurfer
+      # - path to data:/data
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
